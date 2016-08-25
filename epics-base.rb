@@ -10,11 +10,7 @@ class EpicsBase < Formula
 
   def install
     # ENV.deparallelize
-    
-    # set the install location to the proper directory
-    inreplace "configure/CONFIG_SITE", "#INSTALL_LOCATION=<fullpathname>", "INSTALL_LOCATION=#{prefix}"
-    
-    system "make", "install"
+    system "make", "install", "INSTALL_LOCATION=#{prefix}"
     
     # get the host architecture for the directories
     epics_host_arch = `perl startup/EpicsHostArch.pl`
