@@ -31,6 +31,6 @@ class EpicsMotor < Formula
   end
 
   test do
-    system "true"
+    system "echo exit | motorSim"
   end
 end
