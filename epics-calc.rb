@@ -17,7 +17,7 @@ class EpicsCalc < Formula
     sncseq_path = get_package_prefix('epics-seq')
     sscan_path = get_package_prefix('epics-sscan')
   
-    system("make", "SNCSEQ=#{sncseq_path}", "ASYN=#{asyn_path}",
+    system("make", "SNCSEQ=#{sncseq_path}", "SSCAN=#{sscan_path}",
            "INSTALL_LOCATION=#{prefix}", 
            *get_epics_make_variables())
 
