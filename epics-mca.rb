@@ -39,7 +39,7 @@ class EpicsMca < Formula
   end
 
   test do
-    # no test binaries
-    system "true"
+    system "echo exit | mcaRontecApp"
+    system "echo exit | mcaAIM"
   end
 end
