@@ -19,10 +19,11 @@ class EpicsSscan < Formula
            "INSTALL_LOCATION=#{prefix}", 
            *get_epics_make_variables())
 
-    wrap_epics_binaries()
+    # no binaries to wrap
+    # wrap_epics_binaries()
   end
 
   test do
-    # system "echo exit | cal"
+    system "true"
   end
 end
