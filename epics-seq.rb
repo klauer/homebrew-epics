@@ -13,7 +13,6 @@ class EpicsSeq < Formula
   depends_on "re2c"
 
   def install
-    system("cat", "configure/RELEASE")
     system("make", "INSTALL_LOCATION=#{prefix}", 
            *get_epics_make_variables())
 

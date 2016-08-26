@@ -19,10 +19,8 @@ class EpicsMotor < Formula
   
     # Sorry, no IPAC support
     inreplace "configure/RELEASE", /^IPAC=.*$/, "#IPAC="
-    system("cat", "motorApp/Makefile")
     inreplace "motorApp/Makefile", /^DIRS \+= HytecSrc/, "# hytec requires ipac"
 
-    system("cat", "configure/RELEASE")
     system("make", "SNCSEQ=#{sncseq_path}", "ASYN=#{asyn_path}",
            "INSTALL_LOCATION=#{prefix}", 
            *get_epics_make_variables())
