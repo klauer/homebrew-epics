@@ -1,39 +1,45 @@
-# Documentation: https://github.com/Homebrew/brew/blob/master/share/doc/homebrew/Formula-Cookbook.md
-#                http://www.rubydoc.info/github/Homebrew/brew/master/Formula
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
+# vim: ts=2 sw=2 sts=2
+
+require './epics-base'
 
 class EpicsMca < Formula
-  desc ""
-  homepage ""
+  desc "APS BCDA synApps module: mca"
+  homepage "http://www.aps.anl.gov/bcda/synApps"
   url "https://github.com/epics-modules/mca/archive/R7-6.tar.gz"
-  version "6"
+  version "7-6"
   sha256 "07cc684829a7bba83ee4702feadd8d9a31ff79a41ea7f4c6c4dfb213b305e127"
 
-  # depends_on "cmake" => :build
-  depends_on :x11 # if your formula requires any X11/XQuartz components
+  depends_on "libnet"
+  depends_on "epics-base"
+  depends_on "epics-asyn"
+  depends_on "epics-sscan"
+  depends_on "epics-calc"
+  depends_on "epics-busy"
+  depends_on "epics-autosave"
+  depends_on "epics-std"
 
   def install
-    # ENV.deparallelize  # if your formula fails when building in parallel
+    asyn_path = get_package_prefix('epics-asyn')
+    calc_path = get_package_prefix('epics-calc')
+    sscan_path = get_package_prefix('epics-sscan')
+    busy_path = get_package_prefix('epics-busy')
+    autosave_path = get_package_prefix('epics-autosave')
+    std_path = get_package_prefix('epics-std')
+    system("make", 
+           "ASYN=#{asyn_path}",
+           "CALC=#{calc_path}",
+           "SSCAN=#{sscan_path}",
+           "BUSY=#{busy_path}",
+           "AUTOSAVE=#{autosave_path}",
+           "STD=#{std_path}",
+           "INSTALL_LOCATION=#{prefix}", 
+           *get_epics_make_variables())
 
-    # Remove unrecognized options if warned by configure
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
-    # system "cmake", ".", *std_cmake_args
-    system "make", "install" # if this fails, try separate make/make install steps
+    wrap_epics_binaries()
   end
 
   test do
-    # `test do` will create, run in and delete a temporary directory.
-    #
-    # This test will fail and we won't accept that! It's enough to just replace
-    # "false" with the main program this formula installs, but it'd be nice if you
-    # were more thorough. Run the test with `brew test epics-mca`. Options passed
-    # to `brew install` such as `--HEAD` also need to be provided to `brew test`.
-    #
-    # The installed folder is not in the path, so use the entire path to any
-    # executables being tested: `system "#{bin}/program", "do", "something"`.
-    system "false"
+    # no test binaries
+    system "true"
   end
 end

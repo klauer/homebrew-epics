@@ -25,6 +25,7 @@ class EpicsAsyn < Formula
 
   test do
     system "echo exit | testAsynPortDriver"
+    system "echo exit | testIPServer"
     system "testAsynIPPortClient"
   end
 end
