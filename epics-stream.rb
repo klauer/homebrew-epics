@@ -1,39 +1,33 @@
-# Documentation: https://github.com/Homebrew/brew/blob/master/share/doc/homebrew/Formula-Cookbook.md
-#                http://www.rubydoc.info/github/Homebrew/brew/master/Formula
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
+# vim: ts=2 sw=2 sts=2
+
+require_relative './epics-base'
 
 class EpicsStream < Formula
-  desc ""
-  homepage ""
+  desc "EPICS Driver for message based I/O"
+  homepage "http://epics.web.psi.ch/software/streamdevice/"
   url "https://github.com/epics-modules/stream/archive/R2-6c.tar.gz"
   version "2-6c"
   sha256 "9af8437d6a900707d3e3d085f60dd98e28f1bef2201722e820b1a1ff4f8a1445"
 
-  # depends_on "cmake" => :build
-  depends_on :x11 # if your formula requires any X11/XQuartz components
+  depends_on "epics-asyn"
+  depends_on "epics-sscan"
+  depends_on "epics-calc"
 
   def install
-    # ENV.deparallelize  # if your formula fails when building in parallel
+    asyn_path = get_package_prefix('epics-asyn')
+    calc_path = get_package_prefix('epics-calc')
+    sscan_path = get_package_prefix('epics-sscan')
+    system("make", 
+           "ASYN=#{asyn_path}",
+           "CALC=#{calc_path}",
+           "SSCAN=#{sscan_path}",
+           "INSTALL_LOCATION=#{prefix}", 
+           *get_epics_make_variables())
 
-    # Remove unrecognized options if warned by configure
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
-    # system "cmake", ".", *std_cmake_args
-    system "make", "install" # if this fails, try separate make/make install steps
+    wrap_epics_binaries()
   end
 
   test do
-    # `test do` will create, run in and delete a temporary directory.
-    #
-    # This test will fail and we won't accept that! It's enough to just replace
-    # "false" with the main program this formula installs, but it'd be nice if you
-    # were more thorough. Run the test with `brew test epics-stream`. Options passed
-    # to `brew install` such as `--HEAD` also need to be provided to `brew test`.
-    #
-    # The installed folder is not in the path, so use the entire path to any
-    # executables being tested: `system "#{bin}/program", "do", "something"`.
-    system "false"
+    # system "echo exit | mcaAIM"
   end
 end
