@@ -1,6 +1,6 @@
 # vim: ts=2 sw=2 sts=2
 
-require './epics-base'
+require_relative './epics-base'
 
 class EpicsAsyn < Formula
   desc "epics-asyn, asynchronous driver support"
