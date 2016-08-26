@@ -10,9 +10,13 @@ class EpicsAsyn < Formula
   sha256 "21d51274e441053f2b70e085d2ac8b3031c0e82c6b78e357b5685f40e3fab0ec"
 
   depends_on "epics-base"
+  depends_on "epics-seq"
 
   def install
-    system "make", "SNCSEQ=", "IPAC=", "INSTALL_LOCATION=#{prefix}", *get_epics_make_variables()
+    sncseq_path = get_package_prefix('epics-seq')
+    system("make", "SNCSEQ=#{sncseq_path}", 
+           "IPAC=", "INSTALL_LOCATION=#{prefix}",
+           *get_epics_make_variables())
 
     host_arch = get_epics_host_arch()
     File.unlink bin/"#{host_arch}/test"
