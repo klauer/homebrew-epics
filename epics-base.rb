@@ -7,24 +7,38 @@ class EpicsBase < Formula
   version "3.14.12.5"
   sha256 "ef05593edb70c87d6ae02c3e1e7c4f3f325934f1b98deaba49203d9343861d72"
 
+  resource "extensions_top" do
+    url "https://www.aps.anl.gov/epics/download/extensions/extensionsTop_20120904.tar.gz"
+    sha256 "5f2f3953c3bffba735d6b57614fd05068b1295b28ed55fd1e1b85157dbc5808d"
+  end
+
   depends_on "perl"
   depends_on "readline"
 
   def install
     # ENV.deparallelize
+    resource("extensions_top").stage {
+      (prefix/"extensions").install Dir['*']
+    }
+
+    inreplace prefix/"extensions/configure/RELEASE", "EPICS_BASE=$(TOP)/../base", "EPICS_BASE=#{prefix}"
+
     system "make", "install", "INSTALL_LOCATION=#{prefix}"
-    
+
     # get the host architecture for the directories
     epics_host_arch = `perl startup/EpicsHostArch.pl`
 
     system "echo", "Host architecture is: #{epics_host_arch}"
     
     lib.install_symlink Dir["#{lib}/#{epics_host_arch}/*"]
+    
+    # extracted from the extensions archive
+    ext_path = prefix/"extensions"
 
     # necessary environment variables for EPICS binaries
     epics_env = {:EPICS_HOST_ARCH => "#{epics_host_arch}",
                  :EPICS_BASE => prefix,
-                 :EPICS_EXTENSIONS => prefix/"extensions",
+                 :EPICS_EXTENSIONS => ext_path,
                 }
 
     # wrap all binaries with env scripts (bin/caget script -> bin/host_arch/caget)
@@ -41,7 +55,7 @@ class EpicsBase < Formula
     #!/bin/bash
     export EPICS_HOST_ARCH=#{epics_host_arch}
     export EPICS_BASE=#{prefix}
-    export EPICS_EXTENSIONS=#{prefix}/extensions
+    export EPICS_EXTENSIONS=#{ext_path}
     EOS
   end
 
@@ -75,6 +89,10 @@ end
 
 def get_epics_host_arch()
   get_epics_env_var("EPICS_HOST_ARCH")
+end
+
+def get_epics_extension_path()
+  get_epics_env_var("EPICS_EXTENSIONS")
 end
 
 def get_epics_env_map()
