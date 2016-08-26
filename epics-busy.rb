@@ -22,6 +22,7 @@ class EpicsBusy < Formula
   end
 
   test do
+    # no test binaries
     system "true"
   end
 end
