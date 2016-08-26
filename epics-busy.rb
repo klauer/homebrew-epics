@@ -6,7 +6,7 @@ class EpicsBusy < Formula
   desc "APS BCDA synApps module: busy"
   homepage "http://www.aps.anl.gov/bcda/synApps"
   url "https://github.com/epics-modules/busy/archive/R1-6-1.tar.gz"
-  version "6-1"
+  version "1-6-1"
   sha256 "0d352a6722dad3aa9192660f91e72bcc9c26c44c6c18b6f331eee20bb93a6fd2"
 
   depends_on "epics-base"
