@@ -89,5 +89,5 @@ def get_epics_make_variables()
 end
 
 def get_package_prefix(pkgname)
-  `brew --prefix #{pkgname}`
+  Formula[pkgname].prefix
 end
