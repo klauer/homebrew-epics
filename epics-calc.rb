@@ -25,6 +25,6 @@ class EpicsCalc < Formula
   end
 
   test do
-    # system "echo exit | cal"
+    system "true"
   end
 end
