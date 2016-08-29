@@ -1,4 +1,4 @@
-# vim: ts=2 sw=2 sts=2
+# vim: ts=2 sw=2 sts=2 expandtab
 
 require_relative './epics-base'
 
@@ -28,27 +28,27 @@ class EpicsAreaDetector < Formula
     sscan_path = get_package_prefix('epics-sscan')
     busy_path = get_package_prefix('epics-busy')
     autosave_path = get_package_prefix('epics-autosave')
-	
-		# PvAPI problems (ref http://www.aps.anl.gov/epics/tech-talk/2014/msg01350.php)
-		# ... screw this homebrew patch system, I can't figure it out
 
-		# comment out all prosilica lines
-		inreplace "ADApp/Makefile", /^(.*prosilica.*)$/, "# \\1" 
-		# and remove the support files from the plugin dependencies
-		inreplace("ADApp/Makefile", 
-					   	/^# (pluginSrc_DEPEND_DIRS = .*)prosilicaSupport (.*)$/,
+    # PvAPI problems (ref http://www.aps.anl.gov/epics/tech-talk/2014/msg01350.php)
+    # ... screw this homebrew patch system, I can't figure it out
+
+    # comment out all prosilica lines
+    inreplace "ADApp/Makefile", /^(.*prosilica.*)$/, "# \\1"
+    # and remove the support files from the plugin dependencies
+    inreplace("ADApp/Makefile",
+              /^# (pluginSrc_DEPEND_DIRS = .*)prosilicaSupport (.*)$/,
               "\\1 \\2")
-		inreplace "ADApp/commonDriverMakefile", /^(.*PvAPI.*)$/, "# \\1"
-		inreplace "ADApp/pluginSrc/Makefile", /^USR_CXXFLAGS.*-DHAVE_PVAPI$/, ""
+    inreplace "ADApp/commonDriverMakefile", /^(.*PvAPI.*)$/, "# \\1"
+    inreplace "ADApp/pluginSrc/Makefile", /^USR_CXXFLAGS.*-DHAVE_PVAPI$/, ""
 
-    system("make", 
+    system("make",
            "ASYN=#{asyn_path}",
            "CALC=#{calc_path}",
            "BUSY=#{busy_path}",
            "SSCAN=#{sscan_path}",
            "AUTOSAVE=#{autosave_path}",
-					 "AREA_DETECTOR=#{buildpath}",
-           "INSTALL_LOCATION=#{prefix}", 
+           "AREA_DETECTOR=#{buildpath}",
+           "INSTALL_LOCATION=#{prefix}",
            *get_epics_make_variables())
 
     wrap_epics_binaries()
