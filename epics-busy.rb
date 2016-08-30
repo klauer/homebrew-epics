@@ -13,8 +13,10 @@ class EpicsBusy < Formula
   depends_on "epics-asyn"
 
   def install
-    asyn_path = get_package_prefix('epics-asyn')
-    system("make", "ASYN=#{asyn_path}",
+    paths = {:ASYN=>get_package_prefix('epics-asyn'),
+             }
+    fix_epics_release_file(paths)
+    system("make",
            "INSTALL_LOCATION=#{prefix}", 
            *get_epics_make_variables())
 

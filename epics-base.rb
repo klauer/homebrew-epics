@@ -109,3 +109,22 @@ end
 def get_package_prefix(pkgname)
   Formula[pkgname].prefix
 end
+
+def fix_epics_release_file(paths={}, release_path='configure/RELEASE')
+  # paths: a Hash of PKG_VAR=>PATH
+  paths = paths.clone
+  if not paths.has_key? :EPICS_BASE then
+    paths[:EPICS_BASE] = get_epics_base()
+  end
+
+  paths.each do |name, path|
+    inreplace release_path, /^\s*(#?\s*#{name}\s*=.*)$/, "#{name} = #{path}"
+  end
+
+  if not paths.has_key? :SUPPORT then
+    begin
+      inreplace release_path, /^\s*(#?\s*SUPPORT\s*=.*)$/, "# \\1"
+    rescue
+    end
+  end
+end

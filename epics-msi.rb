@@ -22,7 +22,7 @@ class EpicsMsi < Formula
            "INSTALL_LOCATION=" + get_package_prefix('epics-base'),
            *get_epics_make_variables(),
            "install")
-    
+
     # TODO this is bad... but change INSTALL_LOCATION to bin and get:
     # make[1]: *** No rule to make target `/usr/local/Cellar/epics-msi/1-7/bin/darwin-x86/lib/darwin-x86/libCom.a', needed by `msi'.  Stop.
     #

@@ -13,9 +13,12 @@ class EpicsAsyn < Formula
   depends_on "epics-seq"
 
   def install
-    sncseq_path = get_package_prefix('epics-seq')
-    system("make", "SNCSEQ=#{sncseq_path}", 
-           "IPAC=", "INSTALL_LOCATION=#{prefix}",
+    paths = {:SNCSEQ=>get_package_prefix('epics-seq'),
+             :IPAC=>'',
+             }
+    
+    fix_epics_release_file(paths)
+    system("make", "INSTALL_LOCATION=#{prefix}",
            *get_epics_make_variables())
 
     host_arch = get_epics_host_arch()

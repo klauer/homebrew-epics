@@ -17,21 +17,19 @@ class EpicsMca < Formula
   depends_on "epics-busy"
   depends_on "epics-autosave"
   depends_on "epics-std"
+  depends_on "epics-seq"
 
   def install
-    asyn_path = get_package_prefix('epics-asyn')
-    calc_path = get_package_prefix('epics-calc')
-    sscan_path = get_package_prefix('epics-sscan')
-    busy_path = get_package_prefix('epics-busy')
-    autosave_path = get_package_prefix('epics-autosave')
-    std_path = get_package_prefix('epics-std')
+    paths = {:ASYN=>get_package_prefix('epics-asyn'),
+             :CALC=>get_package_prefix('epics-calc'),
+             :SSCAN=>get_package_prefix('epics-sscan'),
+             :BUSY=>get_package_prefix('epics-busy'),
+             :AUTOSAVE=>get_package_prefix('epics-autosave'),
+             :STD=>get_package_prefix('epics-std'),
+             :SNCSEQ=>get_package_prefix('epics-seq'),
+             }
+    fix_epics_release_file(paths)
     system("make", 
-           "ASYN=#{asyn_path}",
-           "CALC=#{calc_path}",
-           "SSCAN=#{sscan_path}",
-           "BUSY=#{busy_path}",
-           "AUTOSAVE=#{autosave_path}",
-           "STD=#{std_path}",
            "INSTALL_LOCATION=#{prefix}", 
            *get_epics_make_variables())
 

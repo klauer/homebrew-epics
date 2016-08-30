@@ -14,20 +14,20 @@ class EpicsMotor < Formula
   depends_on "epics-seq"
 
   def install
-    asyn_path = get_package_prefix('epics-asyn')
-    sncseq_path = get_package_prefix('epics-seq')
-  
     # Sorry, no IPAC support
     inreplace "configure/RELEASE", /^IPAC=.*$/, "#IPAC="
     inreplace "motorApp/Makefile", /^DIRS \+= HytecSrc/, "# hytec requires ipac"
 
-    system("make", "SNCSEQ=#{sncseq_path}", "ASYN=#{asyn_path}",
+    paths = {:ASYN=>get_package_prefix('epics-asyn'),
+             :SNCSEQ=>get_package_prefix('epics-seq'),
+             }
+    fix_epics_release_file(paths)
+
+    system("make",
            "INSTALL_LOCATION=#{prefix}", 
            *get_epics_make_variables())
 
-    # host_arch = get_epics_host_arch()
-    # File.unlink bin/"#{host_arch}/test"
-    wrap_epics_binaries() # , :skip_names=['test'])
+    wrap_epics_binaries()
   end
 
   test do

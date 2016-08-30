@@ -12,6 +12,7 @@ class EpicsAutosave < Formula
   depends_on "epics-base"
 
   def install
+    fix_epics_release_file()
     system("make", "INSTALL_LOCATION=#{prefix}", *get_epics_make_variables())
     wrap_epics_binaries()
   end

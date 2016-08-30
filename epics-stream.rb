@@ -14,13 +14,13 @@ class EpicsStream < Formula
   depends_on "epics-calc"
 
   def install
-    asyn_path = get_package_prefix('epics-asyn')
-    calc_path = get_package_prefix('epics-calc')
-    sscan_path = get_package_prefix('epics-sscan')
-    system("make", 
-           "ASYN=#{asyn_path}",
-           "CALC=#{calc_path}",
-           "SSCAN=#{sscan_path}",
+    paths = {:ASYN=>get_package_prefix('epics-asyn'),
+             :CALC=>get_package_prefix('epics-calc'),
+             :SSCAN=>get_package_prefix('epics-sscan'),
+             }
+    
+    fix_epics_release_file(paths)
+    system("make",
            "INSTALL_LOCATION=#{prefix}", 
            *get_epics_make_variables())
 

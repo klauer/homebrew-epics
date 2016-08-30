@@ -14,12 +14,13 @@ class EpicsStd < Formula
   depends_on "epics-seq"
 
   def install
-    sncseq_path = get_package_prefix('epics-seq')
-    asyn_path = get_package_prefix('epics-asyn')
-    system("make",
-           "ASYN=#{asyn_path}",
-           "SNCSEQ=#{sncseq_path}",
-           "INSTALL_LOCATION=#{prefix}", *get_epics_make_variables())
+    paths = {:SNCSEQ=>get_package_prefix('epics-seq'),
+             :ASYN=>get_package_prefix('epics-asyn'),
+             }
+    
+    fix_epics_release_file(paths)
+    system("make", "INSTALL_LOCATION=#{prefix}",
+           *get_epics_make_variables())
     wrap_epics_binaries()
   end
 

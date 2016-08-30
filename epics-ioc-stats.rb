@@ -14,8 +14,11 @@ class EpicsIocStats < Formula
   depends_on "epics-msi"
 
   def install
-    sncseq_path = get_package_prefix('epics-seq')
-    system("make", "SNCSEQ=#{sncseq_path}", 
+    paths = {:SNCSEQ=>get_package_prefix('epics-seq'),
+             }
+    fix_epics_release_file(paths)
+  
+    system("make",
            "INSTALL_LOCATION=#{prefix}",
            # TODO
            "SNCSEQ_MODULE_VERSION=seq-R2-0-11",

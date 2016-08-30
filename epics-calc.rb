@@ -14,10 +14,12 @@ class EpicsCalc < Formula
   depends_on "epics-sscan"
 
   def install
-    sncseq_path = get_package_prefix('epics-seq')
-    sscan_path = get_package_prefix('epics-sscan')
+    paths = {:SSCAN=>get_package_prefix('epics-sscan'),
+             :SNCSEQ=>get_package_prefix('epics-seq'),
+             }
+    fix_epics_release_file(paths)
   
-    system("make", "SNCSEQ=#{sncseq_path}", "SSCAN=#{sscan_path}",
+    system("make",
            "INSTALL_LOCATION=#{prefix}", 
            *get_epics_make_variables())
 
