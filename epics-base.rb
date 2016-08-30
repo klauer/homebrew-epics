@@ -118,13 +118,17 @@ def fix_epics_release_file(paths={}, release_path='configure/RELEASE')
   end
 
   paths.each do |name, path|
-    inreplace release_path, /^\s*(#?\s*#{name}\s*=.*)$/, "#{name} = #{path}"
+    begin
+      inreplace release_path, /^\s*(#?\s*#{name}\s*=.*)$/, "#{name} = #{path}"
+    rescue Utils::InreplaceError
+      raise if name != :EPICS_BASE
+    end
   end
 
   if not paths.has_key? :SUPPORT then
     begin
       inreplace release_path, /^\s*(#?\s*SUPPORT\s*=.*)$/, "# \\1"
-    rescue
+    rescue Utils::InreplaceError
     end
   end
 end

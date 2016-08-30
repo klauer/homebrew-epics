@@ -60,59 +60,54 @@ class EpicsAreaDetector < Formula
   option "without-firewiredcam", "Build without firewiredcam support"
 
   def install
-    asyn_path = get_package_prefix('epics-asyn')
-    sncseq_path = get_package_prefix('epics-seq')
-    calc_path = get_package_prefix('epics-calc')
-    sscan_path = get_package_prefix('epics-sscan')
-    busy_path = get_package_prefix('epics-busy')
-    autosave_path = get_package_prefix('epics-autosave')
-    iocstats_path = get_package_prefix('epics-ioc-stats')
-    hdf5_path = get_package_prefix('hdf5')
-    szip_path = get_package_prefix('szip')
-    graphicsmagick_path = get_package_prefix('graphicsmagick')
-    xml2_path = get_package_prefix('libxml2')
+    # ENV.deparallelize
+    # xml2_path = get_package_prefix('libxml2')
 
-		option_args = []
+    build_options = {"adsc" => ["ADADSC", "ADADSC"],
+                     "andor" => ["ADANDOR", "ADAndor"],
+                     "andor3" => ["ADANDOR3", "ADAndor3"],
+                     "aravisgige" => ["ARAVISGIGE", "aravisGigE"],
+                     "bruker" => ["ADBRUKER", "ADBruker"],
+                     "dexela" => ["ADDEXELA", "ADDexela"],
+                     "example" => ["ADEXAMPLE", "ADExample"],
+                     "fastccd" => ["ADFASTCCD", "ADFastCCD"],
+                     "firewiredcam" => ["FIREWIREDCAM", "firewireDCAM"],
+                     "lightfield" => ["ADLIGHTFIELD", "ADLightField"],
+                     "mar345" => ["ADMAR345", "ADmar345"],
+                     "marccd" => ["ADMARCCD", "ADmarCCD"],
+                     "merlin" => ["ADMERLIN", "ADMerlin"],
+                     "mythen" => ["ADMYTHEN", "ADMythen"],
+                     "ned" => ["ADNED", "ADnED"],
+                     "perkinelmer" => ["ADPERKINELMER", "ADPerkinElmer"],
+                     "picam" => ["ADPICAM", "ADPICam"],
+                     "pilatus" => ["ADPILATUS", "ADPilatus"],
+                     "pixirad" => ["ADPIXIRAD", "ADPixirad"],
+                     "edge" => ["ADPLUGINEDGE", "ADPluginEdge"],
+                     "pointgrey" => ["ADPOINTGREY", "ADPointGrey"],
+                     "prosilica" => ["ADPROSILICA", "ADProsilica"],
+                     "psl" => ["ADPSL", "ADPSL"],
+                     "pvcam" => ["ADPVCAM", "ADPvCam"],
+                     "qimaging" => ["ADQIMAGING", "ADQImaging"],
+                     "roper" => ["ADROPER", "ADRoper"],
+                     "url" => ["ADURL", "ADURL"],
+                     }
+    option_hash = {}
 
-    if build.with? "ffmpeg"
-      ffmpeg_path = get_package_prefix('ffmpeg')
-      option_args << "FFMPEGSERVER=" + ffmpeg_path
-      option_args << "FFMPEGVIEWER=" + ffmpeg_path
+    build_options.each do |option, info|
+      if build.with? option then
+        variable, directory = info
+        option_hash[variable] = directory
+      end
     end
   
-    if build.with? "graphicsmagick"
-       option_args << "GRAPHICS_MAGICK=#{graphicsmagick_path}"
-       option_args << "USE_GRAPHICSMAGICK=YES"
-    end 
-
-    option_args << "ADADSC=ADADSC" if build.with? "adsc"
-    option_args << "ADANDOR=ADAndor" if build.with? "andor"
-    option_args << "ADANOR3=ADAndor3" if build.with? "anor3"
-    option_args << "ARAVISGIGE=aravisGigE" if build.with? "aravisgige"
-    option_args << "ADBRUKER=ADBruker" if build.with? "bruker"
-    option_args << "ADDEXELA=ADDexela" if build.with? "dexela"
-    option_args << "ADEXAMPLE=ADExample" if build.with? "example"
-    option_args << "ADFASTCCD=ADFastCCD" if build.with? "fastccd"
-    option_args << "FIREWIREDCAM=firewireDCAM" if build.with? "firewiredcam"
-    option_args << "ADLIGHTFIELD=ADLightField" if build.with? "lightfield"
-    option_args << "ADMAR345=ADmar345" if build.with? "mar345"
-    option_args << "ADMARCCD=ADmarCCD" if build.with? "marccd"
-    option_args << "ADMERLIN=ADMerlin" if build.with? "merlin"
-    option_args << "ADMYTHEN=ADMythen" if build.with? "mythen"
-    option_args << "ADNED=ADnED" if build.with? "ned"
-    option_args << "ADPERKINELMER=ADPerkinElmer" if build.with? "perkinelmer"
-    option_args << "ADPICAM=ADPICam" if build.with? "picam"
-    option_args << "ADPILATUS=ADPilatus" if build.with? "pilatus"
-    option_args << "ADPIXIRAD=ADPixirad" if build.with? "pixirad"
-    option_args << "ADPLUGINEDGE=ADPluginEdge" if build.with? "edge"
-    option_args << "ADPOINTGREY=ADPointGrey" if build.with? "pointgrey"
-    option_args << "ADPROSILICA=ADProsilica" if build.with? "prosilica"
-    option_args << "ADPSL=ADPSL" if build.with? "psl"
-    option_args << "ADPVCAM=ADPvCam" if build.with? "pvcam"
-    option_args << "ADQIMAGING=ADQImaging" if build.with? "qimaging"
-    option_args << "ADROPER=ADRoper" if build.with? "roper"
-    option_args << "ADURL=ADURL" if build.with? "url"
+    if build.with? "ffmpeg"
+      ffmpeg_path = get_package_prefix('ffmpeg')
+      option_hash["FFMPEGSERVER"] = ffmpeg_path
+      option_hash["FFMPEGVIEWER"] = ffmpeg_path
+    end
   
+    FileUtils.mv("configure/EXAMPLE_RELEASE_PATHS.local",
+                 "configure/RELEASE_PATHS.local")
     FileUtils.mv("configure/EXAMPLE_RELEASE.local",
                  "configure/RELEASE.local")
     FileUtils.mv("configure/EXAMPLE_RELEASE_LIBS.local",
@@ -122,29 +117,43 @@ class EpicsAreaDetector < Formula
     FileUtils.mv("configure/EXAMPLE_CONFIG_SITE.local",
                  "configure/CONFIG_SITE.local")
   
-    epics_base_path = get_epics_base()
+    fix_epics_release_file(option_hash, "configure/RELEASE.local")
 
-    open("configure/RELEASE_PATHS.local", 'w') { |f|
-      f << "SUPPORT      =SUPPORT_UNUSED_SUPPORT_HMM\n"
-      f << "AREA_DETECTOR=#{buildpath}\n"
-      f << "EPICS_BASE   =#{epics_base_path}\n"
-    }
-  
-    # ENV.deparallelize
+    release_paths = {:SUPPORT=>"SUPPORT_UNUSED_SUPPORT_HMM",
+                     :AREA_DETECTOR=>buildpath,
+                     :EPICS_BASE=>get_epics_base(),
+                     }
+
+    fix_epics_release_file(release_paths, "configure/RELEASE_PATHS.local")
+
+    prods_paths = {:SNCSEQ=>get_package_prefix('epics-seq'),
+                   :CALC=>get_package_prefix('epics-calc'),
+                   :SSCAN=>get_package_prefix('epics-sscan'),
+                   :BUSY=>get_package_prefix('epics-busy'),
+                   :AUTOSAVE=>get_package_prefix('epics-autosave'),
+                   :DEVIOCSTATS=>get_package_prefix('epics-ioc-stats'),
+                   }
+    
+    fix_epics_release_file(prods_paths, "configure/RELEASE_PRODS.local")
+
+    libs_paths = {:ASYN=>get_package_prefix('epics-asyn')
+                  }
+    
+    fix_epics_release_file(libs_paths, "configure/RELEASE_LIBS.local")
+
+    site_paths = {:HDF5=>get_package_prefix('hdf5'),
+                  :SZIP=>get_package_prefix('szip'),
+                 }
+
+    if build.with? "graphicsmagick"
+       site_paths["GRAPHICS_MAGICK"] = get_package_prefix('graphicsmagick')
+       site_paths["USE_GRAPHICSMAGICK"] = "YES"
+    end 
+
+    fix_epics_release_file(site_paths, "configure/CONFIG_SITE.local")
 
     system("make",
-           "ASYN=#{asyn_path}",
-           "SNCSEQ=#{sncseq_path}", 
-           "CALC=#{calc_path}",
-           "BUSY=#{busy_path}",
-           "SSCAN=#{sscan_path}",
-           "AUTOSAVE=#{autosave_path}",
-           "DEVIOCSTATS=#{iocstats_path}",
-           "AREA_DETECTOR=#{buildpath}",
-           "HDF5=#{hdf5_path}",
-           "SZIP=#{szip_path}",
            "INSTALL_LOCATION=#{prefix}",
-					 *option_args,
            *get_epics_make_variables())
 
     wrap_epics_binaries()
