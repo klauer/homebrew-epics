@@ -2,8 +2,8 @@
 
 require_relative './epics-base'
 
-class EpicsAreaDetector < Formula
-  desc "EPICS AreaDetector"
+class EpicsAreaDetector2 < Formula
+  desc "EPICS AreaDetector Version [R2]"
   homepage "http://cars9.uchicago.edu/software/epics/areaDetector.html"
 	head "https://github.com/areaDetector/areaDetector.git", :tag => "R2-4"
   version "2-4"

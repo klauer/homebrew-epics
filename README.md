@@ -21,9 +21,8 @@ To install areaDetector, you may need to tap `homebrew/science` as well.
 $ brew tap homebrew/science
 
 # install R2-4 with the following:
-$ brew install epics-area-detector --HEAD
-```
+$ brew install epics-area-detector2 --HEAD
 
-1-9-1 is also available, but (TODO) apparently needs to be exposed as a
-separate formula for easy installation with brew (like how
-[homebrew-versions](https://github.com/Homebrew/homebrew-versions) works).
+# install R1-9-1 with the following:
+$ brew install epics-area-detector1
+```
