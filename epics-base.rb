@@ -56,6 +56,11 @@ class EpicsBase < Formula
     export EPICS_HOST_ARCH=#{epics_host_arch}
     export EPICS_BASE=#{prefix}
     export EPICS_EXTENSIONS=#{ext_path}
+
+    # Optionally echo the value of the specified variable
+    if [ "$#" -eq 1 ]; then
+      echo "${!1}"
+    fi
     EOS
   end
 
@@ -80,7 +85,8 @@ def wrap_epics_binaries(epics_host_arch=nil, epics_env=nil, skip_names=[])
 end
 
 def get_epics_env_var(varname)
-  `source epics_env.sh 2> /dev/null && echo $#{varname}`.chomp
+  base_prefix = Formula['epics-base'].prefix
+  `bash "#{base_prefix}/bin/epics_env.sh" #{varname}`.chomp
 end
 
 def get_epics_base()
