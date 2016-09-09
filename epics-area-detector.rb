@@ -16,6 +16,7 @@ class EpicsAreaDetector < Formula
   depends_on "libtiff"
   depends_on "libxml2"
   depends_on "nexusformat" => ["without-hdf4"]
+  depends_on "libdc1394"  # firewire-dcam
   depends_on "ffmpeg" => :optional
 
   depends_on "epics-base"
@@ -38,7 +39,7 @@ class EpicsAreaDetector < Formula
   option "without-bruker", "Build without bruker support"
   option "without-dexela", "Build without dexela support"
   option "without-example", "Build without example support"
-  option "without-fastccd", "Build without fastccd support"
+  option "with-fastccd", "Build without fastccd support"
   option "without-lightfield", "Build without lightfield support"
   option "with-merlin", "Build with merlin support"  # libcbfad?
   option "without-mythen", "Build without mythen support"
@@ -57,12 +58,10 @@ class EpicsAreaDetector < Formula
   option "without-marccd", "Build without marccd support"
   option "with-ned", "Build with ned support"   # syscall.h?
   option "with-aravisgige", "Build with aravisgige support"  # no ../aravis/configure?
-  option "without-firewiredcam", "Build without firewiredcam support"
+  option "with-firewiredcam", "Build without firewiredcam support"
 
   def install
     # ENV.deparallelize
-    # xml2_path = get_package_prefix('libxml2')
-
     build_options = {"adsc" => ["ADADSC", "ADADSC"],
                      "andor" => ["ADANDOR", "ADAndor"],
                      "andor3" => ["ADANDOR3", "ADAndor3"],
@@ -143,6 +142,7 @@ class EpicsAreaDetector < Formula
 
     site_paths = {:HDF5=>get_package_prefix('hdf5'),
                   :SZIP=>get_package_prefix('szip'),
+                  :XML2_INCLUDE=>"-I" + get_package_prefix('libxml2') + "/include/libxml2/",
                  }
 
     if build.with? "graphicsmagick"
