@@ -3,9 +3,9 @@
 class EpicsBase < Formula
   desc "Experimental Physics and Industrial Control System"
   homepage "http://www.aps.anl.gov/epics"
-  url "https://www.aps.anl.gov/epics/download/base/baseR3.14.12.5.tar.gz"
-  version "3.14.12.5"
-  sha256 "ef05593edb70c87d6ae02c3e1e7c4f3f325934f1b98deaba49203d9343861d72"
+  url "https://www.aps.anl.gov/epics/download/base/baseR3.14.12.6.tar.gz"
+  version "3.14.12.6"
+  sha256 "bdd20ad185e8208e6032fc63af656f34d95375843f8d93c8ee684f22b5f79f0c"
 
   resource "extensions_top" do
     url "https://www.aps.anl.gov/epics/download/extensions/extensionsTop_20120904.tar.gz"
