@@ -6,7 +6,7 @@ require_relative './epics-base'
 class EpicsMsi < Formula
   desc "Macro Substitution and Include Tool"
   homepage "http://www.aps.anl.gov/epics/extensions/msi/"
-  url "https://www.aps.anl.gov/epics/download/extensions/msi1-7.tar.gz"
+  url "https://epics.anl.gov/download/extensions/msi1-7.tar.gz"
   version "1-7"
   sha256 "040cb5d3fbab85925e5edc5b658792b16a17b4b825198fa1b95ac8eaa2a6cef6"
 

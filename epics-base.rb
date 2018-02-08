@@ -3,13 +3,13 @@
 class EpicsBase < Formula
   desc "Experimental Physics and Industrial Control System"
   homepage "http://www.aps.anl.gov/epics"
-  url "https://www.aps.anl.gov/epics/download/base/baseR3.14.12.6.tar.gz"
-  version "3.14.12.6"
-  sha256 "bdd20ad185e8208e6032fc63af656f34d95375843f8d93c8ee684f22b5f79f0c"
+  url "https://github.com/epics-base/epics-base/archive/3.14.12.7.tar.gz"
+  version "3.14.12.7"
+  sha256 "3bd296c91b9b6f1b166828f6c1a7f6d0f2d7f4f6c1de47af7a42fb852191aa90"
 
   resource "extensions_top" do
-    url "https://www.aps.anl.gov/epics/download/extensions/extensionsTop_20120904.tar.gz"
-    sha256 "5f2f3953c3bffba735d6b57614fd05068b1295b28ed55fd1e1b85157dbc5808d"
+    url "https://github.com/epics-extensions/extensions/archive/extensions_20120904.tar.gz"
+    sha256 "4526110172ccbe0bbec83b9d97f1b0aa3f8bbe65e221b6579abae84fb957725c"
   end
 
   depends_on "perl"

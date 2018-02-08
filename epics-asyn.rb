@@ -5,9 +5,9 @@ require_relative './epics-base'
 class EpicsAsyn < Formula
   desc "epics-asyn, asynchronous driver support"
   homepage "http://www.aps.anl.gov/epics/modules/soft/asyn/"
-  url "https://www.aps.anl.gov/epics/download/modules/asyn4-30.tar.gz"
+  url "https://github.com/epics-modules/asyn/archive/R4-30.tar.gz"
   version "4-30"
-  sha256 "21d51274e441053f2b70e085d2ac8b3031c0e82c6b78e357b5685f40e3fab0ec"
+  sha256 "306aa699735e18e62e78f17deab24cb7e08073db070980f59e04f71b9e83352f"
 
   depends_on "epics-base"
   depends_on "epics-seq"
